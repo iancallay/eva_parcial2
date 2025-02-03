@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SesionesService } from '../services/sesiones/sesiones.service';
+import { LibrosService } from '../services/libros/libros.service';
 
 @Component({
   selector: 'app-libros',
@@ -9,20 +11,55 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class LibrosPage implements OnInit {
 
-  tasks: any[] = [];
+  libros: any = [];
+  usuario: any = null;
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private sesionService: SesionesService,
+    private librosService: LibrosService
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.todos();
+    console.log('Libros:', this.libros);
+    try {
+      const session = await this.sesionService.obtenerSesion();
+      if (session) {
+        this.usuario = session.data; // Asigna la sesión completa o solo la parte relevante
+      } else {
+        console.warn('No se encontró ninguna sesión activa');
+        this.router.navigate(['/login']);
+      }
+    } catch (error) {
+      console.error('Error al cargar la sesión:', error);
+      this.router.navigate(['/login']);
+    }
   }
 
-  cerrarSesion() {
-    // Lógica para cerrar sesión
-    // Puedes redirigir al usuario a la página de inicio de sesión o realizar otras acciones necesarias
+  logout() {
+    this.sesionService.cerrarSesion();
+    this.router.navigate(['/login']);
   }
 
   nuevoLibro() {
     this.router.navigate(['/nuevo-libro']);
+  }
+
+  todos() {
+    let data = {
+      accion: 'consultar'
+    };
+    this.librosService.todosLibros(data).subscribe(
+      (data) => {
+        this.libros = data.data;
+        console.log('Libros obtenidos:', this.libros);
+      },
+      (error) => {
+        console.error('Error al obtener los libros:', error);
+      }
+    );
   }
 
   editarLibro(libro: any) {

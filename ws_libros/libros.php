@@ -1,6 +1,6 @@
 <?php
 
-include('./config/config.php');
+include('config.php');
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Credentials: true');
@@ -28,7 +28,6 @@ switch ($post['accion']) {
                 $data[] = [
                     'codigo' => $row['lib_id'],
                     'usuario' => $row['lib_usuId'],
-                    'nombre' => $row['lib_nombre'],
                     'titulo' => $row['lib_titulo'],
                     'autor' => $row['lib_autor'],
                     'anio' => $row['lib_anio'],
@@ -38,16 +37,15 @@ switch ($post['accion']) {
             }
             $respuesta = ['code' => 200, 'response' => 'Data fetched successfully', 'estado' => true, 'data' => $data];
         } else {
-            $respuesta = ['code' => 400, 'response' => 'No data found', 'estado' => false];
+            $respuesta = ['code' => 400, 'response' => 'No se encontraron registros', 'estado' => false];
         }
         break;
 
     case 'insertar':
         $sql = sprintf(
-            "INSERT INTO libros (lib_usuId, lib_nombre, lib_titulo, lib_autor, lib_anio, lib_editorial, lib_fecha)
-                VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+            "INSERT INTO libros (lib_usuId, lib_titulo, lib_autor, lib_anio, lib_editorial, lib_fecha)
+                VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
             mysqli_real_escape_string($conn, $post['usuario']),
-            mysqli_real_escape_string($conn, $post['nombre']),
             mysqli_real_escape_string($conn, $post['titulo']),
             mysqli_real_escape_string($conn, $post['autor']),
             mysqli_real_escape_string($conn, $post['anio']),
@@ -56,15 +54,14 @@ switch ($post['accion']) {
         );
         $query = mysqli_query($conn, $sql);
         $respuesta = $query
-            ? ['code' => 200, 'response' => 'Data inserted successfully', 'estado' => true]
-            : ['code' => 400, 'response' => 'Failed to insert data', 'estado' => false];
+            ? ['code' => 200, 'response' => 'Libro registrado exitosamente', 'estado' => true]
+            : ['code' => 400, 'response' => 'No se pudo agregar el libro', 'estado' => false];
         break;
 
     case 'actualizar':
         $sql = sprintf(
-            "UPDATE libros SET lib_usuId='%s', lib_nombre='%s', lib_titulo='%s', lib_autor='%s', lib_anio='%s', lib_editorial='%s', lib_fecha='%s' WHERE lib_id='%s'",
+            "UPDATE libros SET lib_usuId='%s', lib_titulo='%s', lib_autor='%s', lib_anio='%s', lib_editorial='%s', lib_fecha='%s' WHERE lib_id='%s'",
             mysqli_real_escape_string($conn, $post['usuario']),
-            mysqli_real_escape_string($conn, $post['nombre']),
             mysqli_real_escape_string($conn, $post['titulo']),
             mysqli_real_escape_string($conn, $post['autor']),
             mysqli_real_escape_string($conn, $post['anio']),
@@ -74,8 +71,8 @@ switch ($post['accion']) {
         );
         $query = mysqli_query($conn, $sql);
         $respuesta = $query
-            ? ['code' => 200, 'response' => 'Data updated successfully', 'estado' => true]
-            : ['code' => 400, 'response' => 'Failed to update data', 'estado' => false];
+            ? ['code' => 200, 'response' => 'Libro actualizado exitosamente', 'estado' => true]
+            : ['code' => 400, 'response' => 'No se pudo actualizar el libro', 'estado' => false];
         break;
     case 'eliminar':
         $sql = sprintf(
@@ -84,11 +81,11 @@ switch ($post['accion']) {
         );
         $query = mysqli_query($conn, $sql);
         $respuesta = $query
-            ? ['code' => 200, 'response' => 'Data deleted successfully', 'estado' => true]
-            : ['code' => 400, 'response' => 'Failed to delete data', 'estado' => false];
+            ? ['code' => 200, 'response' => 'Libro eliminado exitosamente', 'estado' => true]
+            : ['code' => 400, 'response' => 'No se pudo eliminar el libro', 'estado' => false];
         break;
     default:
-        $respuesta = ['code' => 400, 'response' => 'Invalid action', 'estado' => false];
+        $respuesta = ['code' => 400, 'response' => 'Acción invalida', 'estado' => false];
         break;
 }
 echo json_encode($respuesta);

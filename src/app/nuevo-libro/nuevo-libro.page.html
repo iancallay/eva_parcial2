@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>nuevoLibro</ion-title>
+    <ion-title>{{ libroId ? 'Editar libro': 'Nuevo Libro'}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,6 +10,34 @@
       <ion-title size="large">nuevoLibro</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Título</ion-label>
+        <ion-input [(ngModel)]="titulo" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Autor</ion-label>
+        <ion-input [(ngModel)]="autor" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Año</ion-label>
+        <ion-input [(ngModel)]="anio" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Editorial</ion-label>
+        <ion-input [(ngModel)]="editorial" required></ion-input>
+      </ion-item>
+
+      <ion-button expand="full" color="primary" (click)="guardarLibro()">
+        {{ libroId ? 'Actualizar' : 'Guardar' }} Libro
+      </ion-button>
+    </ion-card-content>
+
+  </ion-card>
   <ion-fab vertical="bottom" horizontal="start" slot="fixed">
     <ion-fab-button (click)="backPage()">
       <ion-icon name="chevron-back-outline"></ion-icon>

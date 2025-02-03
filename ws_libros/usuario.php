@@ -1,6 +1,6 @@
 <?php
 
-include('./config/config.php');
+include('config.php');
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Credentials: true');
@@ -36,7 +36,7 @@ switch ($post['accion']) {
             }
             $respuesta = ['code' => 200, 'response' => 'Data fetched successfully', 'estado' => true, 'data' => $data];
         } else {
-            $respuesta = ['code' => 400, 'response' => 'No data found', 'estado' => false];
+            $respuesta = ['code' => 400, 'response' => 'No se encontraron registros', 'estado' => false];
         }
         break;
 
@@ -53,8 +53,8 @@ switch ($post['accion']) {
         );
         $query = mysqli_query($conn, $sql);
         $respuesta = $query
-            ? ['code' => 200, 'response' => 'Data inserted successfully', 'estado' => true]
-            : ['code' => 400, 'response' => 'Failed to insert data', 'estado' => false];
+            ? ['code' => 200, 'response' => 'Usuario creado exitosamente', 'estado' => true]
+            : ['code' => 400, 'response' => 'No se pudo crear el usuario', 'estado' => false];
         break;
 
     case 'actualizar':
@@ -71,8 +71,8 @@ switch ($post['accion']) {
         );
         $query = mysqli_query($conn, $sql);
         $respuesta = $query
-            ? ['code' => 200, 'response' => 'Data updated successfully', 'estado' => true]
-            : ['code' => 400, 'response' => 'Failed to update data', 'estado' => false];
+            ? ['code' => 200, 'response' => 'Usuario actualizado exitosamente', 'estado' => true]
+            : ['code' => 400, 'response' => 'No se pudo actualizar el usuario', 'estado' => false];
         break;
 
     case 'eliminar':
@@ -82,8 +82,8 @@ switch ($post['accion']) {
         );
         $query = mysqli_query($conn, $sql);
         $respuesta = $query
-            ? ['code' => 200, 'response' => 'Data deleted successfully', 'estado' => true]
-            : ['code' => 400, 'response' => 'Failed to delete data', 'estado' => false];
+            ? ['code' => 200, 'response' => 'Usuario eliminado exitosamente', 'estado' => true]
+            : ['code' => 400, 'response' => 'No se pudo eliminar el usuario', 'estado' => false];
         break;
 
     case 'verificar_cedula':
@@ -93,7 +93,7 @@ switch ($post['accion']) {
         );
         $query = mysqli_query($conn, $sql);
         $respuesta = $query && mysqli_num_rows($query) > 0
-            ? ['code' => 200, 'response' => 'Cedula already exist', 'estado' => true]
+            ? ['code' => 200, 'response' => 'El número de cedula ya existe', 'estado' => true]
             : ['code' => 400, 'response' => 'No data found', 'estado' => false];
         break;
 
@@ -104,11 +104,11 @@ switch ($post['accion']) {
         );
         $query = mysqli_query($conn, $sql);
         $respuesta = $query && mysqli_num_rows($query) > 0
-            ? ['code' => 200, 'response' => 'Email already exist', 'estado' => true]
+            ? ['code' => 200, 'response' => 'El correo ya existe', 'estado' => true]
             : ['code' => 400, 'response' => 'No data found', 'estado' => false];
         break;
 
-    case 'dato':
+    case 'unUsuario':
         $sql = sprintf(
             "SELECT * FROM usuarios WHERE usu_id='%s'",
             mysqli_real_escape_string($conn, $post['codigo'])
@@ -127,12 +127,12 @@ switch ($post['accion']) {
             }
             $respuesta = ['code' => 200, 'response' => 'Data fetched successfully', 'estado' => true, 'data' => $data];
         } else {
-            $respuesta = ['code' => 400, 'response' => 'No data found', 'estado' => false];
+            $respuesta = ['code' => 400, 'response' => 'No se encontro el registro', 'estado' => false];
         }
         break;
 
     default:
-        $respuesta = ['code' => 400, 'response' => 'Invalid action', 'estado' => false];
+        $respuesta = ['code' => 400, 'response' => 'Acción invalida', 'estado' => false];
         break;
 }
 

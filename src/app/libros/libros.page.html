@@ -1,13 +1,3 @@
-<!-- <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Libros</ion-title>
-  </ion-toolbar>
-</ion-header> -->
-
-<!-- <ion-content [fullscreen]="true"> -->
-
-
-<!-- Menú lateral -->
 <ion-menu contentId="main-content">
   <ion-header>
     <ion-toolbar>
@@ -19,7 +9,7 @@
     <ion-list>
       <ion-item>
         <ion-label>
-          <!-- <h2>{{ userData[0]?.nom_persona }} {{ userData[0].ape_persona}}</h2> -->
+          <h2 *ngIf="usuario"><strong>{{usuario.usu_nombre}} {{usuario.usu_apellido}}</strong></h2>
         </ion-label>
       </ion-item>
 
@@ -33,9 +23,9 @@
         <ion-label>Reseñas</ion-label>
       </ion-item>
 
-      <ion-item (click)="cerrarSesion()">
+      <ion-item (click)="logout()">
         <ion-icon name="exit-sharp" slot="start"></ion-icon>
-        <ion-label>Logout</ion-label>
+        <ion-label>Salir</ion-label>
       </ion-item>
     </ion-list>
   </ion-content>
@@ -51,9 +41,9 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-content class="ion-padding">
+  <ion-content class="ion-padding" [scrollEvents]="true">
     <!-- <h2>Bienvenido, {{ userData[0]?.nom_persona }} {{userData[0]?.ape_persona}}</h2> -->
-    <h2><strong>Bienvenido, </strong></h2>
+    <h2 *ngIf="usuario"><strong>Bienvenido, {{usuario.usu_nombre}} {{usuario.usu_apellido}}</strong></h2>
     <div class="container" style="margin: auto; width: 40%;">
       <ion-searchbar debounce="50" placeholder="Buscar libros..." (ionInput)="buscarLibros($event)"
         class="small-searchbar1">
@@ -61,17 +51,20 @@
     </div>
 
     <ion-list>
-      <ion-item *ngFor="let task of tasks; let i = index">
+      <ion-item *ngFor="let libro of libros; let i = index">
         <ion-label>
-          <h2>{{ task.titulo }}</h2>
-          <ion-badge [color]="task.estado === 'pendiente' ? 'warning' : 'success'">
-            {{ task.estado }}
+          <h2>{{ libro.titulo }}</h2>
+          <h3>Autor: {{ libro.autor }}</h3>
+          <h3>Editorial: {{ libro.editorial }}</h3>
+          <ion-badge [color]="libro.anio === 'null' ? 'warning' : 'success'">
+            Publicado: {{ libro.anio }}
           </ion-badge>
         </ion-label>
 
-        <ion-button (click)="editarLibro(task.id)">View Details</ion-button>
+        <ion-button (click)="editarLibro(libro.id)"><ion-icon name="pencil" title="Editar"></ion-icon> </ion-button>
 
-        <ion-button color="danger" (click)="borrarLibro(task.id)">Delete</ion-button>
+        <ion-button color="danger" (click)="borrarLibro(libro.id)"><ion-icon name="trash"
+            title="Eliminar"></ion-icon></ion-button>
       </ion-item>
     </ion-list>
 
@@ -88,7 +81,7 @@
     </ion-fab>
 
     <!-- Mensaje cuando no hay resultados -->
-    <div *ngIf="tasks.length === 0" class="no-results">
+    <div *ngIf="libros.length === 0" class="no-results">
       <p>No se encontraron resultados para la búsqueda.</p>
     </div>
   </ion-content>

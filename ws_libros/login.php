@@ -1,6 +1,6 @@
 <?php
 
-include('./config/config.php');
+include('config.php');
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Credentials: true');
@@ -24,7 +24,7 @@ switch ($post['accion']) {
         $hashedPassword = password_hash($post['password'], PASSWORD_BCRYPT);
         $hashedPassword = $post['password'];
         $sql = sprintf(
-            "SELECT * FROM usuario WHERE usu_email='%s'",
+            "SELECT * FROM usuarios WHERE usu_email='%s'",
             mysqli_real_escape_string($conn, $post['email'])
         );
         $query = mysqli_query($conn, $sql);
@@ -32,17 +32,17 @@ switch ($post['accion']) {
             $row = $query->fetch_assoc();
             if (password_verify($hashedPassword, $row['usu_clave'])) {
                 $data = $row;
-                $respuesta = ['code' => 200, 'response' => 'Login successful', 'estado' => true];
+                $respuesta = ['code' => 200, 'response' => 'Login successful', 'estado' => true, 'data' => $data];
             } else {
-                $respuesta = ['code' => 400, 'response' => 'Invalid credentials', 'estado' => false];
+                $respuesta = ['code' => 400, 'response' => 'Credenciales invalidos', 'estado' => false];
             }
         } else {
-            $respuesta = ['code' => 400, 'response' => 'User not found', 'estado' => false];
+            $respuesta = ['code' => 400, 'response' => 'Usuario no encontrado', 'estado' => false];
         }
         break;
 
     default:
-        $respuesta = ['code' => 400, 'response' => 'Invalid action', 'estado' => false];
+        $respuesta = ['code' => 400, 'response' => 'Acción invalida', 'estado' => false];
         break;
 }
-echo json_encode(['respuesta' => $respuesta, 'data' => $data]);
+echo json_encode($respuesta);
