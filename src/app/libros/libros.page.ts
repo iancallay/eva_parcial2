@@ -71,9 +71,10 @@ export class LibrosPage implements OnInit {
 
     let data = {
       accion: 'eliminar',
-      codigo: 9
+      codigo: id
     };
 
+    console.log(data);
     this.librosService.eliminarLibro(data).subscribe(
       async (resp) => {
         await this.presentAlert(resp.response);
