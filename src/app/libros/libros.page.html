@@ -57,13 +57,14 @@
           <h3>Autor: {{ libro.autor }}</h3>
           <h3>Editorial: {{ libro.editorial }}</h3>
           <ion-badge [color]="libro.anio === 'null' ? 'warning' : 'success'">
-            Publicado: {{ libro.anio }}
+            Publicado: {{ libro.anio }} {{libro.codigo}}
           </ion-badge>
         </ion-label>
 
-        <ion-button (click)="editarLibro(libro.id)"><ion-icon name="pencil" title="Editar"></ion-icon> </ion-button>
+        <ion-button *ngIf="libro.codigo" (click)="verResenias(libro.codigo)"><ion-icon name="pencil"
+            title="Editar"></ion-icon> </ion-button>
 
-        <ion-button color="danger" (click)="borrarLibro(libro.id)"><ion-icon name="trash"
+        <ion-button color="danger" (click)="borrarLibro(libro.codigo)"><ion-icon name="trash"
             title="Eliminar"></ion-icon></ion-button>
       </ion-item>
     </ion-list>

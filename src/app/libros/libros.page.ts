@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SesionesService } from '../services/sesiones/sesiones.service';
 import { LibrosService } from '../services/libros/libros.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-libros',
@@ -18,12 +19,11 @@ export class LibrosPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private sesionService: SesionesService,
-    private librosService: LibrosService
+    private librosService: LibrosService,
+    private alertController: AlertController
   ) { }
 
   async ngOnInit() {
-    this.todos();
-    console.log('Libros:', this.libros);
     try {
       const session = await this.sesionService.obtenerSesion();
       if (session) {
@@ -32,6 +32,7 @@ export class LibrosPage implements OnInit {
         console.warn('No se encontró ninguna sesión activa');
         this.router.navigate(['/login']);
       }
+      this.todos();
     } catch (error) {
       console.error('Error al cargar la sesión:', error);
       this.router.navigate(['/login']);
@@ -62,14 +63,27 @@ export class LibrosPage implements OnInit {
     );
   }
 
-  editarLibro(libro: any) {
-    // Lógica para editar un libro existente
-    // Puedes abrir un formulario para editar los detalles del libro
+  verResenias(id: any) {
+    this.router.navigate(['/listar-resenias', id]);
   }
 
-  borrarLibro(libro: any) {
-    // Lógica para borrar un libro
-    // Puedes mostrar un cuadro de diálogo de confirmación antes de borrar el libro
+  borrarLibro(id: any) {
+
+    let data = {
+      accion: 'eliminar',
+      codigo: 9
+    };
+
+    this.librosService.eliminarLibro(data).subscribe(
+      async (resp) => {
+        await this.presentAlert(resp.response);
+        this.todos();
+      },
+      async (resp) => {
+        await this.presentAlert(resp.response);
+        console.error('Error al guardar el libro:', resp.response);
+      }
+    );
   }
 
   buscarLibros(event: any) {
@@ -80,4 +94,14 @@ export class LibrosPage implements OnInit {
   backPage() {
     this.router.navigate(['/home']);
   }
+
+  async presentAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Atención',
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
 }

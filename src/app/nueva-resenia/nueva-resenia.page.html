@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{ libroId ? 'Editar libro': 'Reseña Libro'}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Reseñas</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">id</ion-label>
+        <ion-input [(ngModel)]="libroId" required></ion-input>
+        <ion-label position="floating">Comentarios</ion-label>
+        <ion-input [(ngModel)]="comentarios" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Calificacion</ion-label>
+        <ion-input [(ngModel)]="calificacion" required></ion-input>
+      </ion-item>
+
+      <ion-button expand="full" color="primary" (click)="guardarRes()">
+        {{ libroId ? 'Actualizar' : 'Guardar' }} Libro
+      </ion-button>
+    </ion-card-content>
+
+  </ion-card>
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button (click)="backPage()">
+      <ion-icon name="chevron-back-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

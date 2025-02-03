@@ -23,4 +23,9 @@ export class LibrosService {
   guardarLibro(data: any): Observable<any> {
     return this.http.post<any>(`${this.apiURL}libros.php`, data);
   }
+
+  eliminarLibro(data: any): Observable<any> {
+    console.log(data);
+    return this.http.post<any>(`${this.apiURL}libros.php`, data);
+  }
 }

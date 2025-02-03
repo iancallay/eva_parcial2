@@ -1,0 +1,72 @@
+<ion-menu contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Menú</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <ion-list>
+      <ion-item>
+        <ion-label>
+          
+        </ion-label>
+      </ion-item>
+
+      <ion-item (click)="nueva()">
+        <ion-icon name="book-sharp" slot="start"></ion-icon>
+        <ion-label>Nuevo resenia</ion-label>
+      </ion-item>
+
+      <ion-item (click)="nueva()">
+        <ion-icon name="sparkles-sharp" slot="start"></ion-icon>
+        <ion-label>Reseñas</ion-label>
+      </ion-item>
+
+      <ion-item (click)="nueva()">
+        <ion-icon name="exit-sharp" slot="start"></ion-icon>
+        <ion-label>Salir</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>EVALUACION 2DO PARCIAL</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding" [scrollEvents]="true">
+    <ion-list>
+      <ion-item *ngFor="let resenia of resenias; let i = index">
+        <ion-label>
+          <h2>{{ resenia.titulo }}</h2>
+          <h3>Comentarios: {{ resenia.comentarios }}</h3>
+          <h3>Calificacion: {{ resenia.calificacion }}</h3>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+      <ion-fab-button (click)="backPage()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button *ngIf="resenias" (click)="nuevaResenia(resenias[0].codigo)">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <!-- Mensaje cuando no hay resultados -->
+    <div *ngIf="resenias.length === 0" class="no-results">
+      <p>No se encontraron resultados para la búsqueda.</p>
+    </div>
+  </ion-content>
+</div>
